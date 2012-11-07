@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `NCA_Image_Metadata` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `NCA_Image_Metadata`;
 -- MySQL dump 10.13  Distrib 5.5.24, for osx10.5 (i386)
 --
 -- Host: 10.0.1.30    Database: NCA_Image_Metadata
