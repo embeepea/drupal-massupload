@@ -1,0 +1,611 @@
+id                 75
+title              CMIP3, MULTI-MODEL MEAN SIMULATION Temperature Difference (F) from 1971-2000
+description        Simulated difference in mean annual temperature (¡F) for the Great Plains region,
+                          for each future time period (2021-2050, 2041-2070, and 2071-2099) with respect to the reference period
+                          of 1971-2000. These fields are multi-model means from the 15 CMIP3 global climate simulations for the
+                          high (A2) and low (B1) emissions scenarios. Color with stippling (category 3) indicates that more than
+                          50% of the models show a statistically significant change in temperature, and more than 67% agree on
+                          the sign of the change (see text). Temperature changes increase throughout the 21st century, more
+                          rapidly for the high emissions scenario.
+region             Great Plains
+data_type          Simulated
+var_type           Temperature (F)
+assoc_report       Southwest Climate
+image_source       Andrew Buddenberg
+data_source_title  CMIP3_TTest,figures/GreatPlains/CMIP3_Temp_GP.jpg
+data_source_url    figures/GreatPlains/CMIP3_Temp_GP.jpg, figures/GreatPlains/GP_precip_annual.png, figures/GreatPlains/GP_precip_seasonal_a2.png
+image_files        metadata/GreatPlains/Great Plains_75_metadata.html
+data_files         docs/GreatPlains/Great Plains_75_docs.blah
+metadata_files
+doc_files
+
+
+region             Great Plains       field_region_target_id  => 29
+var_type           Temperature (F)    field_variable_type_tid => 21
+assoc_report       Southwest Climate  field_associated_report_target_id => 20
+
+
+
+------------------------------------------------------------------------
+
+table node
+    +-----------+------------------+------+-----+---------+----------------+
+    | Field     | Type             | Null | Key | Default | Extra          |
+    +-----------+------------------+------+-----+---------+----------------+
+    | nid       | int(10) unsigned | NO   | PRI | NULL    | auto_increment |  ==> 41
+    | vid       | int(10) unsigned | NO   | UNI | 0       |                |  ==> 41
+    | type      | varchar(32)      | NO   | MUL |         |                |  ==> data_catalog
+    | language  | varchar(12)      | NO   |     |         |                |  ==> und
+    | title     | varchar(255)     | NO   | MUL |         |                |  ==> CMIP3, MULTI-M...om 1971-2000
+    | uid       | int(11)          | NO   | MUL | 0       |                |  ==> 2
+    | status    | int(11)          | NO   | MUL | 1       |                |  ==> 1
+    | created   | int(11)          | NO   | MUL | 0       |                |  ==> 1351882987
+    | changed   | int(11)          | NO   | MUL | 0       |                |  ==> 1351883028
+    | comment   | int(11)          | NO   |     | 0       |                |  ==> 1
+    | promote   | int(11)          | NO   | MUL | 0       |                |  ==> 1
+    | sticky    | int(11)          | NO   |     | 0       |                |  ==> 0
+    | tnid      | int(10) unsigned | NO   | MUL | 0       |                |  ==> 0
+    | translate | int(11)          | NO   | MUL | 0       |                |  ==> 0
+    +-----------+------------------+------+-----+---------+----------------+
+
+
+node_revision
+    +-----------+------------------+------+-----+---------+----------------+
+    | Field     | Type             | Null | Key | Default | Extra          |
+    +-----------+------------------+------+-----+---------+----------------+
+    | nid       | int(10) unsigned | NO   | MUL | 0       |                |  ==> 41
+    | vid       | int(10) unsigned | NO   | PRI | NULL    | auto_increment |  ==> 41
+    | uid       | int(11)          | NO   | MUL | 0       |                |  ==> 2
+    | title     | varchar(255)     | NO   |     |         |                |  ==> CMIP3, MULTI-MODEL MEAN SIMULATION Temperature Difference (F) from 1971-2000
+    | log       | longtext         | NO   |     | NULL    |                |
+    | timestamp | int(11)          | NO   |     | 0       |                |  ==> 1351883028
+    | status    | int(11)          | NO   |     | 1       |                |  ==> 1
+    | comment   | int(11)          | NO   |     | 0       |                |  ==> 1
+    | promote   | int(11)          | NO   |     | 0       |                |  ==> 1
+    | sticky    | int(11)          | NO   |     | 0       |                |  ==> 0
+    +-----------+------------------+------+-----+---------+----------------+
+
+
+
+table field_data_field_description
+    +--------------------------+------------------+------+-----+---------+-------+
+    | Field                    | Type             | Null | Key | Default | Extra |
+    +--------------------------+------------------+------+-----+---------+-------+
+    | entity_type              | varchar(128)     | NO   | PRI |         |       |  ==> node
+    | bundle                   | varchar(128)     | NO   | MUL |         |       |  ==> data_catalog
+    | deleted                  | tinyint(4)       | NO   | PRI | 0       |       |  ==> 0
+    | entity_id                | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 41
+    | revision_id              | int(10) unsigned | YES  | MUL | NULL    |       |  ==> 41
+    | language                 | varchar(32)      | NO   | PRI |         |       |  ==> und
+    | delta                    | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 0
+    | field_description_value  | longtext         | YES  |     | NULL    |       |  ==> Simulated diff...scenario.
+    | field_description_format | varchar(255)     | YES  | MUL | NULL    |       |  ==> NULL
+    +--------------------------+------------------+------+-----+---------+-------+
+
+
+table field_revision_field_description
+    +--------------------------+------------------+------+-----+---------+-------+
+    | Field                    | Type             | Null | Key | Default | Extra |
+    +--------------------------+------------------+------+-----+---------+-------+
+    | entity_type              | varchar(128)     | NO   | PRI |         |       |  ==> node
+    | bundle                   | varchar(128)     | NO   | MUL |         |       |  ==> data_catalog
+    | deleted                  | tinyint(4)       | NO   | PRI | 0       |       |  ==> 0
+    | entity_id                | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 41
+    | revision_id              | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 41
+    | language                 | varchar(32)      | NO   | PRI |         |       |  ==> und
+    | delta                    | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 0
+    | field_description_value  | longtext         | YES  |     | NULL    |       |  ==> Simulated diff...sions scenario.
+    | field_description_format | varchar(255)     | YES  | MUL | NULL    |       |  ==> NULL
+    +--------------------------+------------------+------+-----+---------+-------+
+
+
+table field_data_field_associated_report
+    +-----------------------------------+------------------+------+-----+---------+-------+
+    | Field                             | Type             | Null | Key | Default | Extra |
+    +-----------------------------------+------------------+------+-----+---------+-------+
+    | entity_type                       | varchar(128)     | NO   | PRI |         |       |  ==> node
+    | bundle                            | varchar(128)     | NO   | MUL |         |       |  ==> data_catalog
+    | deleted                           | tinyint(4)       | NO   | PRI | 0       |       |  ==> 0
+    | entity_id                         | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 41
+    | revision_id                       | int(10) unsigned | YES  | MUL | NULL    |       |  ==> 41
+    | language                          | varchar(32)      | NO   | PRI |         |       |  ==> und
+    | delta                             | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 0
+    | field_associated_report_target_id | int(10) unsigned | NO   | MUL | NULL    |       |  ==> 20
+    +-----------------------------------+------------------+------+-----+---------+-------+
+
+
+table field_revision_field_associated_report
+    +-----------------------------------+------------------+------+-----+---------+-------+
+    | Field                             | Type             | Null | Key | Default | Extra |
+    +-----------------------------------+------------------+------+-----+---------+-------+
+    | entity_type                       | varchar(128)     | NO   | PRI |         |       |  ==> node
+    | bundle                            | varchar(128)     | NO   | MUL |         |       |  ==> data_catalog
+    | deleted                           | tinyint(4)       | NO   | PRI | 0       |       |  ==> 0
+    | entity_id                         | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 41
+    | revision_id                       | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 41
+    | language                          | varchar(32)      | NO   | PRI |         |       |  ==> und
+    | delta                             | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 0
+    | field_associated_report_target_id | int(10) unsigned | NO   | MUL | NULL    |       |  ==> 20
+    +-----------------------------------+------------------+------+-----+---------+-------+
+
+
+table field_data_field_background_link2
+    +-----------------------------------+------------------+------+-----+---------+-------+
+    | Field                             | Type             | Null | Key | Default | Extra |
+    +-----------------------------------+------------------+------+-----+---------+-------+
+    | entity_type                       | varchar(128)     | NO   | PRI |         |       |  ==> node
+    | bundle                            | varchar(128)     | NO   | MUL |         |       |  ==> data_catalog
+    | deleted                           | tinyint(4)       | NO   | PRI | 0       |       |  ==> 0
+    | entity_id                         | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 41
+    | revision_id                       | int(10) unsigned | YES  | MUL | NULL    |       |  ==> 41
+    | language                          | varchar(32)      | NO   | PRI |         |       |  ==> und
+    | delta                             | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 0
+    | field_background_link2_url        | varchar(2048)    | YES  |     | NULL    |       |  ==> www.google.com
+    | field_background_link2_title      | varchar(255)     | YES  |     | NULL    |       |  ==> CMIP3_TTest
+    | field_background_link2_attributes | mediumtext       | YES  |     | NULL    |       |  ==> a:0:{}
+    +-----------------------------------+------------------+------+-----+---------+-------+
+
+
+table field_revision_field_background_link2
+    +-----------------------------------+------------------+------+-----+---------+-------+
+    | Field                             | Type             | Null | Key | Default | Extra |
+    +-----------------------------------+------------------+------+-----+---------+-------+
+    | entity_type                       | varchar(128)     | NO   | PRI |         |       |  ==> node
+    | bundle                            | varchar(128)     | NO   | MUL |         |       |  ==> data_catalog
+    | deleted                           | tinyint(4)       | NO   | PRI | 0       |       |  ==> 0
+    | entity_id                         | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 41
+    | revision_id                       | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 41
+    | language                          | varchar(32)      | NO   | PRI |         |       |  ==> und
+    | delta                             | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 0
+    | field_background_link2_url        | varchar(2048)    | YES  |     | NULL    |       |  ==> www.google.com
+    | field_background_link2_title      | varchar(255)     | YES  |     | NULL    |       |  ==> CMIP3_TTest
+    | field_background_link2_attributes | mediumtext       | YES  |     | NULL    |       |  ==> a:0:{}
+    +-----------------------------------+------------------+------+-----+---------+-------+
+
+
+
+
+
+
+table field_data_field_data_type
+    +-----------------------+------------------+------+-----+---------+-------+
+    | Field                 | Type             | Null | Key | Default | Extra |
+    +-----------------------+------------------+------+-----+---------+-------+
+    | entity_type           | varchar(128)     | NO   | PRI |         |       |  ==> node
+    | bundle                | varchar(128)     | NO   | MUL |         |       |  ==> data_catalog
+    | deleted               | tinyint(4)       | NO   | PRI | 0       |       |  ==> 0
+    | entity_id             | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 41
+    | revision_id           | int(10) unsigned | YES  | MUL | NULL    |       |  ==> 41
+    | language              | varchar(32)      | NO   | PRI |         |       |  ==> und
+    | delta                 | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 0
+    | field_data_type_value | varchar(255)     | YES  | MUL | NULL    |       |  ==> Simulated
+    +-----------------------+------------------+------+-----+---------+-------+
+
+table field_revision_field_data_type
+    +-----------------------+------------------+------+-----+---------+-------+
+    | Field                 | Type             | Null | Key | Default | Extra |
+    +-----------------------+------------------+------+-----+---------+-------+
+    | entity_type           | varchar(128)     | NO   | PRI |         |       |  ==> node
+    | bundle                | varchar(128)     | NO   | MUL |         |       |  ==> data_catalog
+    | deleted               | tinyint(4)       | NO   | PRI | 0       |       |  ==> 0
+    | entity_id             | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 41
+    | revision_id           | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 41
+    | language              | varchar(32)      | NO   | PRI |         |       |  ==> und
+    | delta                 | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 0
+    | field_data_type_value | varchar(255)     | YES  | MUL | NULL    |       |  ==> Simulated
+    +-----------------------+------------------+------+-----+---------+-------+
+
+table field_data_field_metadata_file
+    +---------------------------------+---------------------+------+-----+---------+-------+
+    | Field                           | Type                | Null | Key | Default | Extra |
+    +---------------------------------+---------------------+------+-----+---------+-------+
+    | entity_type                     | varchar(128)        | NO   | PRI |         |       |  ==> node
+    | bundle                          | varchar(128)        | NO   | MUL |         |       |  ==> data_catalog
+    | deleted                         | tinyint(4)          | NO   | PRI | 0       |       |  ==> 0
+    | entity_id                       | int(10) unsigned    | NO   | PRI | NULL    |       |  ==> 41
+    | revision_id                     | int(10) unsigned    | YES  | MUL | NULL    |       |  ==> 41
+    | language                        | varchar(32)         | NO   | PRI |         |       |  ==> und
+    | delta                           | int(10) unsigned    | NO   | PRI | NULL    |       |  ==> 0
+    | field_metadata_file_fid         | int(10) unsigned    | YES  | MUL | NULL    |       |  ==> 22
+    | field_metadata_file_display     | tinyint(3) unsigned | NO   |     | 1       |       |  ==> 1
+    | field_metadata_file_description | text                | YES  |     | NULL    |       |  ==>
+    +---------------------------------+---------------------+------+-----+---------+-------+
+
+table field_revision_field_metadata_file
+    +---------------------------------+---------------------+------+-----+---------+-------+
+    | Field                           | Type                | Null | Key | Default | Extra |
+    +---------------------------------+---------------------+------+-----+---------+-------+
+    | entity_type                     | varchar(128)        | NO   | PRI |         |       |  ==> node
+    | bundle                          | varchar(128)        | NO   | MUL |         |       |  ==> data_catalog
+    | deleted                         | tinyint(4)          | NO   | PRI | 0       |       |  ==> 0
+    | entity_id                       | int(10) unsigned    | NO   | PRI | NULL    |       |  ==> 41
+    | revision_id                     | int(10) unsigned    | NO   | PRI | NULL    |       |  ==> 41
+    | language                        | varchar(32)         | NO   | PRI |         |       |  ==> und
+    | delta                           | int(10) unsigned    | NO   | PRI | NULL    |       |  ==> 0
+    | field_metadata_file_fid         | int(10) unsigned    | YES  | MUL | NULL    |       |  ==> 22
+    | field_metadata_file_display     | tinyint(3) unsigned | NO   |     | 1       |       |  ==> 1
+    | field_metadata_file_description | text                | YES  |     | NULL    |       |
+    +---------------------------------+---------------------+------+-----+---------+-------+
+
+table field_data_field_region
+    +------------------------+------------------+------+-----+---------+-------+
+    | Field                  | Type             | Null | Key | Default | Extra |
+    +------------------------+------------------+------+-----+---------+-------+
+    | entity_type            | varchar(128)     | NO   | PRI |         |       |  ==> node
+    | bundle                 | varchar(128)     | NO   | MUL |         |       |  ==> data_catalog
+    | deleted                | tinyint(4)       | NO   | PRI | 0       |       |  ==> 0
+    | entity_id              | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 41
+    | revision_id            | int(10) unsigned | YES  | MUL | NULL    |       |  ==> 41
+    | language               | varchar(32)      | NO   | PRI |         |       |  ==> und
+    | delta                  | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 0
+    | field_region_target_id | int(10) unsigned | NO   | MUL | NULL    |       |  ==> 29
+    +------------------------+------------------+------+-----+---------+-------+
+
+table field_revision_field_region
+    +------------------------+------------------+------+-----+---------+-------+
+    | Field                  | Type             | Null | Key | Default | Extra |
+    +------------------------+------------------+------+-----+---------+-------+
+    | entity_type            | varchar(128)     | NO   | PRI |         |       |  ==> node
+    | bundle                 | varchar(128)     | NO   | MUL |         |       |  ==> data_catalog
+    | deleted                | tinyint(4)       | NO   | PRI | 0       |       |  ==> 0
+    | entity_id              | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 41
+    | revision_id            | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 41
+    | language               | varchar(32)      | NO   | PRI |         |       |  ==> und
+    | delta                  | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 0
+    | field_region_target_id | int(10) unsigned | NO   | MUL | NULL    |       |  ==> 29
+    +------------------------+------------------+------+-----+---------+-------+
+
+table field_data_field_source
+    +---------------------+------------------+------+-----+---------+-------+
+    | Field               | Type             | Null | Key | Default | Extra |
+    +---------------------+------------------+------+-----+---------+-------+
+    | entity_type         | varchar(128)     | NO   | PRI |         |       |  ==> node
+    | bundle              | varchar(128)     | NO   | MUL |         |       |  ==> data_catalog
+    | deleted             | tinyint(4)       | NO   | PRI | 0       |       |  ==> 0
+    | entity_id           | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 41
+    | revision_id         | int(10) unsigned | YES  | MUL | NULL    |       |  ==> 41
+    | language            | varchar(32)      | NO   | PRI |         |       |  ==> und
+    | delta               | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 0
+    | field_source_value  | varchar(255)     | YES  |     | NULL    |       |  ==> Andrew Buddenberg
+    | field_source_format | varchar(255)     | YES  | MUL | NULL    |       |  ==> NULL
+    +---------------------+------------------+------+-----+---------+-------+
+
+
+table field_revision_field_source
+    +---------------------+------------------+------+-----+---------+-------+
+    | Field               | Type             | Null | Key | Default | Extra |
+    +---------------------+------------------+------+-----+---------+-------+
+    | entity_type         | varchar(128)     | NO   | PRI |         |       |  ==> node
+    | bundle              | varchar(128)     | NO   | MUL |         |       |  ==> data_catalog
+    | deleted             | tinyint(4)       | NO   | PRI | 0       |       |  ==> 0
+    | entity_id           | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 41
+    | revision_id         | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 41
+    | language            | varchar(32)      | NO   | PRI |         |       |  ==> und
+    | delta               | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 0
+    | field_source_value  | varchar(255)     | YES  |     | NULL    |       |  ==> Andrew Buddenberg
+    | field_source_format | varchar(255)     | YES  | MUL | NULL    |       |  ==> NULL
+    +---------------------+------------------+------+-----+---------+-------+
+
+
+table field_data_field_supporting_document
+    +---------------------------------------+---------------------+------+-----+---------+-------+
+    | Field                                 | Type                | Null | Key | Default | Extra |
+    +---------------------------------------+---------------------+------+-----+---------+-------+
+    | entity_type                           | varchar(128)        | NO   | PRI |         |       |  ==> node
+    | bundle                                | varchar(128)        | NO   | MUL |         |       |  ==> data_catalog
+    | deleted                               | tinyint(4)          | NO   | PRI | 0       |       |  ==> 0
+    | entity_id                             | int(10) unsigned    | NO   | PRI | NULL    |       |  ==> 41
+    | revision_id                           | int(10) unsigned    | YES  | MUL | NULL    |       |  ==> 41
+    | language                              | varchar(32)         | NO   | PRI |         |       |  ==> und
+    | delta                                 | int(10) unsigned    | NO   | PRI | NULL    |       |  ==> 0
+    | field_supporting_document_fid         | int(10) unsigned    | YES  | MUL | NULL    |       |  ==> 23
+    | field_supporting_document_display     | tinyint(3) unsigned | NO   |     | 1       |       |  ==> 1
+    | field_supporting_document_description | text                | YES  |     | NULL    |       |
+    +---------------------------------------+---------------------+------+-----+---------+-------+
+
+
+table field_revision_field_supporting_document
+    +---------------------------------------+---------------------+------+-----+---------+-------+
+    | Field                                 | Type                | Null | Key | Default | Extra |
+    +---------------------------------------+---------------------+------+-----+---------+-------+
+    | entity_type                           | varchar(128)        | NO   | PRI |         |       |  ==> node
+    | bundle                                | varchar(128)        | NO   | MUL |         |       |  ==> data_catalog
+    | deleted                               | tinyint(4)          | NO   | PRI | 0       |       |  ==> 0
+    | entity_id                             | int(10) unsigned    | NO   | PRI | NULL    |       |  ==> 41
+    | revision_id                           | int(10) unsigned    | NO   | PRI | NULL    |       |  ==> 41
+    | language                              | varchar(32)         | NO   | PRI |         |       |  ==> und
+    | delta                                 | int(10) unsigned    | NO   | PRI | NULL    |       |  ==> 0
+    | field_supporting_document_fid         | int(10) unsigned    | YES  | MUL | NULL    |       |  ==> 23
+    | field_supporting_document_display     | tinyint(3) unsigned | NO   |     | 1       |       |  ==> 1
+    | field_supporting_document_description | text                | YES  |     | NULL    |       |
+    +---------------------------------------+---------------------+------+-----+---------+-------+
+
+
+table field_data_field_variable_type
+    +-------------------------+------------------+------+-----+---------+-------+
+    | Field                   | Type             | Null | Key | Default | Extra |
+    +-------------------------+------------------+------+-----+---------+-------+
+    | entity_type             | varchar(128)     | NO   | PRI |         |       |  ==> node
+    | bundle                  | varchar(128)     | NO   | MUL |         |       |  ==> data_catalog
+    | deleted                 | tinyint(4)       | NO   | PRI | 0       |       |  ==> 0
+    | entity_id               | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 41
+    | revision_id             | int(10) unsigned | YES  | MUL | NULL    |       |  ==> 41
+    | language                | varchar(32)      | NO   | PRI |         |       |  ==> und
+    | delta                   | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 0
+    | field_variable_type_tid | int(10) unsigned | YES  | MUL | NULL    |       |  ==> 21
+    +-------------------------+------------------+------+-----+---------+-------+  
+
+                      select * from taxonomy_term_data ;
+                          +-----+-----+-----------------+-------------+---------------+--------+
+                          | tid | vid | name            | description | format        | weight |
+                          +-----+-----+-----------------+-------------+---------------+--------+
+                          |   1 |   2 | NARCCAP         |             | filtered_html |      0 |
+                          |   2 |   2 | CMIP3           |             | filtered_html |      0 |
+                          |   5 |   7 | National        |             | filtered_html |      0 |
+                          |   6 |   7 | Alaska          |             | filtered_html |      8 |
+                          |   8 |   7 | Northwest       |             | filtered_html |      7 |
+                          |   9 |   7 | Southwest       |             | filtered_html |      1 |
+                          |  10 |   7 | Great Plains    |             | filtered_html |      4 |
+                          |  11 |   7 | Midwest         |             | filtered_html |      3 |
+                          |  12 |   7 | Northeast       |             | filtered_html |      5 |
+                          |  13 |   7 | Southeast       |             | filtered_html |      2 |
+                          |  14 |   7 | Pacific Islands |             | filtered_html |      6 |
+                          |  19 |   2 | Observed        |             | filtered_html |      0 |
+                          |  20 |   2 | Projected       |             | filtered_html |      0 |
+                          |  21 |   6 | Temperature     |             | filtered_html |      0 |
+                          |  22 |   6 | Precipitation   |             | filtered_html |      1 |
+                          +-----+-----+-----------------+-------------+---------------+--------+
+                      
+
+
+table field_revision_field_variable_type
+    +-------------------------+------------------+------+-----+---------+-------+
+    | Field                   | Type             | Null | Key | Default | Extra |
+    +-------------------------+------------------+------+-----+---------+-------+
+    | entity_type             | varchar(128)     | NO   | PRI |         |       |  ==> node
+    | bundle                  | varchar(128)     | NO   | MUL |         |       |  ==> data_catalog
+    | deleted                 | tinyint(4)       | NO   | PRI | 0       |       |  ==> 0
+    | entity_id               | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 41
+    | revision_id             | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 41
+    | language                | varchar(32)      | NO   | PRI |         |       |  ==> und
+    | delta                   | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 0
+    | field_variable_type_tid | int(10) unsigned | YES  | MUL | NULL    |       |  ==> 21
+    +-------------------------+------------------+------+-----+---------+-------+  
+
+
+************************************************************************
+
+
+table field_data_field_image
+    +--------------------+------------------+------+-----+---------+-------+
+    | Field              | Type             | Null | Key | Default | Extra |
+    +--------------------+------------------+------+-----+---------+-------+
+    | entity_type        | varchar(128)     | NO   | PRI |         |       |  ==> node         |  node         |  node         |
+    | bundle             | varchar(128)     | NO   | MUL |         |       |  ==> data_catalog |  data_catalog |  data_catalog |
+    | deleted            | tinyint(4)       | NO   | PRI | 0       |       |  ==> 0            |  0            |  0            |
+    | entity_id          | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 41           |  41           |  41           |
+    | revision_id        | int(10) unsigned | YES  | MUL | NULL    |       |  ==> 41           |  41           |  41           |
+    | language           | varchar(32)      | NO   | PRI |         |       |  ==> und          |  und          |  und          |
+    | delta              | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 0            |  1            |  2            |
+    | field_image_fid    | int(10) unsigned | YES  | MUL | NULL    |       |  ==> 19           |  20           |  21           |
+    | field_image_alt    | varchar(128)     | YES  |     | NULL    |       |  ==>              |               |               |
+    | field_image_title  | varchar(128)     | YES  |     | NULL    |       |  ==>              |               |               |
+    | field_image_width  | int(10) unsigned | YES  |     | NULL    |       |  ==> 3400         |  1600         |  1600         |
+    | field_image_height | int(10) unsigned | YES  |     | NULL    |       |  ==> 4400         |  1200         |  1200         |
+    +--------------------+------------------+------+-----+---------+-------+
+
+
+
+table field_revision_field_image
+    +--------------------+------------------+------+-----+---------+-------+
+    | Field              | Type             | Null | Key | Default | Extra |
+    +--------------------+------------------+------+-----+---------+-------+
+    | entity_type        | varchar(128)     | NO   | PRI |         |       |  ==> node         |  node         |  node         |
+    | bundle             | varchar(128)     | NO   | MUL |         |       |  ==> data_catalog |  data_catalog |  data_catalog |
+    | deleted            | tinyint(4)       | NO   | PRI | 0       |       |  ==> 0            |  0            |  0            |
+    | entity_id          | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 41           |  41           |  41           |
+    | revision_id        | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 41           |  41           |  41           |
+    | language           | varchar(32)      | NO   | PRI |         |       |  ==> und          |  und          |  und          |
+    | delta              | int(10) unsigned | NO   | PRI | NULL    |       |  ==> 0            |  1            |  2            |
+    | field_image_fid    | int(10) unsigned | YES  | MUL | NULL    |       |  ==> 19           |  20           |  21           |
+    | field_image_alt    | varchar(128)     | YES  |     | NULL    |       |  ==>              |               |               |
+    | field_image_title  | varchar(128)     | YES  |     | NULL    |       |  ==>              |               |               |
+    | field_image_width  | int(10) unsigned | YES  |     | NULL    |       |  ==> 3400         |  1600         |  1600         |
+    | field_image_height | int(10) unsigned | YES  |     | NULL    |       |  ==> 4400         |  1200         |  1200         |
+    +--------------------+------------------+------+-----+---------+-------+
+
+
+
+table file_managed
+    +-----------+------------------+------+-----+---------+----------------+
+    | Field     | Type             | Null | Key | Default | Extra          |
+    +-----------+------------------+------+-----+---------+----------------+
+    | fid       | int(10) unsigned | NO   | PRI | NULL    | auto_increment |  ==> 19                          |  20                               |  21
+    | uid       | int(10) unsigned | NO   | MUL | 0       |                |  ==> 2                           |  2                                |  2
+    | filename  | varchar(255)     | NO   |     |         |                |  ==> CMIP3_Temp_GP.jpg           |  GP_precip_annual.png             |  GP_precip_seasonal_a2.png
+    | uri       | varchar(255)     | NO   | UNI |         |                |  ==> public://CMIP3_Temp_GP.jpg  |  public://GP_precip_annual.png    |  public://GP_precip_seasonal_a2.png
+    | filemime  | varchar(255)     | NO   |     |         |                |  ==> image/jpeg                  |  image/png                        |  image/png
+    | filesize  | int(10) unsigned | NO   |     | 0       |                |  ==> 2736532                     |  82332                            |  111592
+    | status    | tinyint(4)       | NO   | MUL | 0       |                |  ==> 1                           |  1                                |  1
+    | timestamp | int(10) unsigned | NO   | MUL | 0       |                |  ==> 1351882987                  |  1351882987                       |  1351882987
+    +-----------+------------------+------+-----+---------+----------------+
+
+
+describe file_usage ;
+    +--------+------------------+------+-----+---------+-------+
+    | Field  | Type             | Null | Key | Default | Extra |
+    +--------+------------------+------+-----+---------+-------+
+    | fid    | int(10) unsigned | NO   | PRI | NULL    |       |  ==>  19    |  20    |  21
+    | module | varchar(255)     | NO   | PRI |         |       |  ==>  file  |  file  |  file
+    | type   | varchar(64)      | NO   | PRI |         |       |  ==>  node  |  node  |  nod
+    | id     | int(10) unsigned | NO   | PRI | 0       |       |  ==>  41    |  41    |  41
+    | count  | int(10) unsigned | NO   |     | 0       |       |  ==>  1     |  1     |  1
+    +--------+------------------+------+-----+---------+-------+
+
+
+************************************************************************
+EMPTY TABLES:
+
+table field_data_field_data_file
+    +-----------------------------+---------------------+------+-----+---------+-------+
+    | Field                       | Type                | Null | Key | Default | Extra |
+    +-----------------------------+---------------------+------+-----+---------+-------+
+    | entity_type                 | varchar(128)        | NO   | PRI |         |       |
+    | bundle                      | varchar(128)        | NO   | MUL |         |       |
+    | deleted                     | tinyint(4)          | NO   | PRI | 0       |       |
+    | entity_id                   | int(10) unsigned    | NO   | PRI | NULL    |       |
+    | revision_id                 | int(10) unsigned    | YES  | MUL | NULL    |       |
+    | language                    | varchar(32)         | NO   | PRI |         |       |
+    | delta                       | int(10) unsigned    | NO   | PRI | NULL    |       |
+    | field_data_file_fid         | int(10) unsigned    | YES  | MUL | NULL    |       |
+    | field_data_file_display     | tinyint(3) unsigned | NO   |     | 1       |       |
+    | field_data_file_description | text                | YES  |     | NULL    |       |
+    +-----------------------------+---------------------+------+-----+---------+-------+
+Empty set (0.00 sec)
+
+table field_revision_field_data_file
+    +-----------------------------+---------------------+------+-----+---------+-------+
+    | Field                       | Type                | Null | Key | Default | Extra |
+    +-----------------------------+---------------------+------+-----+---------+-------+
+    | entity_type                 | varchar(128)        | NO   | PRI |         |       |
+    | bundle                      | varchar(128)        | NO   | MUL |         |       |
+    | deleted                     | tinyint(4)          | NO   | PRI | 0       |       |
+    | entity_id                   | int(10) unsigned    | NO   | PRI | NULL    |       |
+    | revision_id                 | int(10) unsigned    | NO   | PRI | NULL    |       |
+    | language                    | varchar(32)         | NO   | PRI |         |       |
+    | delta                       | int(10) unsigned    | NO   | PRI | NULL    |       |
+    | field_data_file_fid         | int(10) unsigned    | YES  | MUL | NULL    |       |
+    | field_data_file_display     | tinyint(3) unsigned | NO   |     | 1       |       |
+    | field_data_file_description | text                | YES  |     | NULL    |       |
+    +-----------------------------+---------------------+------+-----+---------+-------+
+Empty set (0.00 sec)
+
+
+table field_data_field_map_extent
+    +----------------------+------------------+------+-----+---------+-------+
+    | Field                | Type             | Null | Key | Default | Extra |
+    +----------------------+------------------+------+-----+---------+-------+
+    | entity_type          | varchar(128)     | NO   | PRI |         |       |
+    | bundle               | varchar(128)     | NO   | MUL |         |       |
+    | deleted              | tinyint(4)       | NO   | PRI | 0       |       |
+    | entity_id            | int(10) unsigned | NO   | PRI | NULL    |       |
+    | revision_id          | int(10) unsigned | YES  | MUL | NULL    |       |
+    | language             | varchar(32)      | NO   | PRI |         |       |
+    | delta                | int(10) unsigned | NO   | PRI | NULL    |       |
+    | field_map_extent_tid | int(10) unsigned | YES  | MUL | NULL    |       |
+    +----------------------+------------------+------+-----+---------+-------+
+Empty set (0.00 sec)
+
+
+table field_revision_field_map_extent
+    +----------------------+------------------+------+-----+---------+-------+
+    | Field                | Type             | Null | Key | Default | Extra |
+    +----------------------+------------------+------+-----+---------+-------+
+    | entity_type          | varchar(128)     | NO   | PRI |         |       |
+    | bundle               | varchar(128)     | NO   | MUL |         |       |
+    | deleted              | tinyint(4)       | NO   | PRI | 0       |       |
+    | entity_id            | int(10) unsigned | NO   | PRI | NULL    |       |
+    | revision_id          | int(10) unsigned | NO   | PRI | NULL    |       |
+    | language             | varchar(32)      | NO   | PRI |         |       |
+    | delta                | int(10) unsigned | NO   | PRI | NULL    |       |
+    | field_map_extent_tid | int(10) unsigned | YES  | MUL | NULL    |       |
+    +----------------------+------------------+------+-----+---------+-------+
+Empty set (0.00 sec)
+
+
+table field_data_field_scenario_report_file
+    +----------------------------------------+---------------------+------+-----+---------+-------+
+    | Field                                  | Type                | Null | Key | Default | Extra |
+    +----------------------------------------+---------------------+------+-----+---------+-------+
+    | entity_type                            | varchar(128)        | NO   | PRI |         |       |
+    | bundle                                 | varchar(128)        | NO   | MUL |         |       |
+    | deleted                                | tinyint(4)          | NO   | PRI | 0       |       |
+    | entity_id                              | int(10) unsigned    | NO   | PRI | NULL    |       |
+    | revision_id                            | int(10) unsigned    | YES  | MUL | NULL    |       |
+    | language                               | varchar(32)         | NO   | PRI |         |       |
+    | delta                                  | int(10) unsigned    | NO   | PRI | NULL    |       |
+    | field_scenario_report_file_fid         | int(10) unsigned    | YES  | MUL | NULL    |       |
+    | field_scenario_report_file_display     | tinyint(3) unsigned | NO   |     | 1       |       |
+    | field_scenario_report_file_description | text                | YES  |     | NULL    |       |
+    +----------------------------------------+---------------------+------+-----+---------+-------+
+Empty set (0.00 sec)
+
+table field_revision_field_scenario_report_file
+    +----------------------------------------+---------------------+------+-----+---------+-------+
+    | Field                                  | Type                | Null | Key | Default | Extra |
+    +----------------------------------------+---------------------+------+-----+---------+-------+
+    | entity_type                            | varchar(128)        | NO   | PRI |         |       |
+    | bundle                                 | varchar(128)        | NO   | MUL |         |       |
+    | deleted                                | tinyint(4)          | NO   | PRI | 0       |       |
+    | entity_id                              | int(10) unsigned    | NO   | PRI | NULL    |       |
+    | revision_id                            | int(10) unsigned    | NO   | PRI | NULL    |       |
+    | language                               | varchar(32)         | NO   | PRI |         |       |
+    | delta                                  | int(10) unsigned    | NO   | PRI | NULL    |       |
+    | field_scenario_report_file_fid         | int(10) unsigned    | YES  | MUL | NULL    |       |
+    | field_scenario_report_file_display     | tinyint(3) unsigned | NO   |     | 1       |       |
+    | field_scenario_report_file_description | text                | YES  |     | NULL    |       |
+    +----------------------------------------+---------------------+------+-----+---------+-------+
+Empty set (0.00 sec)
+
+table field_data_field_scenarios
+    +---------------------------+------------------+------+-----+---------+-------+
+    | Field                     | Type             | Null | Key | Default | Extra |
+    +---------------------------+------------------+------+-----+---------+-------+
+    | entity_type               | varchar(128)     | NO   | PRI |         |       |
+    | bundle                    | varchar(128)     | NO   | MUL |         |       |
+    | deleted                   | tinyint(4)       | NO   | PRI | 0       |       |
+    | entity_id                 | int(10) unsigned | NO   | PRI | NULL    |       |
+    | revision_id               | int(10) unsigned | YES  | MUL | NULL    |       |
+    | language                  | varchar(32)      | NO   | PRI |         |       |
+    | delta                     | int(10) unsigned | NO   | PRI | NULL    |       |
+    | field_scenarios_target_id | int(10) unsigned | NO   | MUL | NULL    |       |
+    +---------------------------+------------------+------+-----+---------+-------+
+Empty set (0.00 sec)
+
+
+table field_revision_field_scenarios
+    +---------------------------+------------------+------+-----+---------+-------+
+    | Field                     | Type             | Null | Key | Default | Extra |
+    +---------------------------+------------------+------+-----+---------+-------+
+    | entity_type               | varchar(128)     | NO   | PRI |         |       |
+    | bundle                    | varchar(128)     | NO   | MUL |         |       |
+    | deleted                   | tinyint(4)       | NO   | PRI | 0       |       |
+    | entity_id                 | int(10) unsigned | NO   | PRI | NULL    |       |
+    | revision_id               | int(10) unsigned | NO   | PRI | NULL    |       |
+    | language                  | varchar(32)      | NO   | PRI |         |       |
+    | delta                     | int(10) unsigned | NO   | PRI | NULL    |       |
+    | field_scenarios_target_id | int(10) unsigned | NO   | MUL | NULL    |       |
+    +---------------------------+------------------+------+-----+---------+-------+
+Empty set (0.00 sec)
+
+
+table field_data_field_version
+    +---------------------+------------------+------+-----+---------+-------+
+    | Field               | Type             | Null | Key | Default | Extra |
+    +---------------------+------------------+------+-----+---------+-------+
+    | entity_type         | varchar(128)     | NO   | PRI |         |       |
+    | bundle              | varchar(128)     | NO   | MUL |         |       |
+    | deleted             | tinyint(4)       | NO   | PRI | 0       |       |
+    | entity_id           | int(10) unsigned | NO   | PRI | NULL    |       |
+    | revision_id         | int(10) unsigned | YES  | MUL | NULL    |       |
+    | language            | varchar(32)      | NO   | PRI |         |       |
+    | delta               | int(10) unsigned | NO   | PRI | NULL    |       |
+    | field_version_value | int(11)          | YES  |     | NULL    |       |
+    +---------------------+------------------+------+-----+---------+-------+
+Empty set (0.01 sec)
+
+
+table field_revision_field_version
+    +---------------------+------------------+------+-----+---------+-------+
+    | Field               | Type             | Null | Key | Default | Extra |
+    +---------------------+------------------+------+-----+---------+-------+
+    | entity_type         | varchar(128)     | NO   | PRI |         |       |
+    | bundle              | varchar(128)     | NO   | MUL |         |       |
+    | deleted             | tinyint(4)       | NO   | PRI | 0       |       |
+    | entity_id           | int(10) unsigned | NO   | PRI | NULL    |       |
+    | revision_id         | int(10) unsigned | NO   | PRI | NULL    |       |
+    | language            | varchar(32)      | NO   | PRI |         |       |
+    | delta               | int(10) unsigned | NO   | PRI | NULL    |       |
+    | field_version_value | int(11)          | YES  |     | NULL    |       |
+    +---------------------+------------------+------+-----+---------+-------+
+Empty set (0.00 sec)
