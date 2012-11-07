@@ -70,6 +70,12 @@ EOF
 ;
 }
 
+sub quote {
+    my $string = shift;
+    $string =~ s/"/\\"/g;
+    return '"' . $string . '"';
+}
+
 $dbh = DoQuery::Connect($DbCredentials::database, $DbCredentials::username, $DbCredentials::password);
 
 $sth0 = DoQuery::DoQuery("select id from image");
@@ -78,19 +84,19 @@ while ($hr0 = $sth0->fetchrow_hashref()) {
     if ($hr = $sth->fetchrow_hashref()) {
         @fields = (
             $hr->{id},
-            $dbh->quote(  $hr->{title}              ),
-            $dbh->quote(  $hr->{description}        ),
-            $dbh->quote(  $hr->{region}             ),
-            $dbh->quote(  $hr->{data_type}          ),
-            $dbh->quote(  $hr->{var_type}           ),
-            $dbh->quote(  $hr->{assoc_report}       ),
-            $dbh->quote(  $hr->{image_source	}   ),
-            $dbh->quote(  $hr->{data_source_title}  ),
-            $dbh->quote(  $hr->{data_source_url}    ),
-            $dbh->quote(  $hr->{image_files}        ),
-            $dbh->quote(  $hr->{data_files}         ),
-            $dbh->quote(  $hr->{metadata_files}     ),
-            $dbh->quote(  $hr->{doc_files}          )
+            quote(  $hr->{title}              ) || "''",
+            quote(  $hr->{description}        ) || "''",
+            quote(  $hr->{region}             ) || "''",
+            quote(  $hr->{data_type}          ) || "''",
+            quote(  $hr->{var_type}           ) || "''",
+            quote(  $hr->{assoc_report}       ) || "''",
+            quote(  $hr->{image_source	}   ) || "''",
+            quote(  $hr->{data_source_title}  ) || "''",
+            quote(  $hr->{data_source_url}    ) || "''",
+            quote(  $hr->{image_files}        ) || "''",
+            quote(  $hr->{data_files}         ) || "''",
+            quote(  $hr->{metadata_files}     ) || "''",
+            quote(  $hr->{doc_files}          ) || "''"
             );        
         printf("%s\n", join(",", @fields));
     } else {

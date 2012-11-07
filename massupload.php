@@ -4,6 +4,8 @@ global $glob;
 $glob = array('input_dir'           => dirname(realpath(__FILE__)),
               'csvfile'             => "test.csv",
 
+              'image_dir'           => "images/dir/goes/here",
+
               // drupal user id of user who should own uploaded content:
               'uid'                 => 5,
 
@@ -15,6 +17,7 @@ if (!($fp = fopen(sprintf("%s/%s", $glob['input_dir'], $glob['csvfile']), "r")))
 }
 
 function csv_array_to_hash($a) {
+  global $glob;
   $hash = array();
   if ($a && count($a)>0) {
     $i = 0;
@@ -37,6 +40,7 @@ function csv_array_to_hash($a) {
 }
 
 function record_massupload_data($tablename, $condition) {
+  global $glob;
   db_insert('massupload_data')
     ->fields(array('tablename' => $tablename,
                    'where_condition' => $condition))
@@ -79,7 +83,8 @@ function insert_node(&$h) {
 
 }
 
-function insert_field($h, $field, $values) {
+function insert_field($h, $field, $values, $delta=0) {
+  global $glob;
   //
   //  will insert into tables:
   //     field_data_field_$field
@@ -94,7 +99,7 @@ function insert_field($h, $field, $values) {
              'entity_id'                => $h['nid'],
              'revision_id'              => $h['vid'],
              'language'                 => 'und',
-             'delta'                    => 0);
+             'delta'                    => $delta);
   foreach ($values as $key => $value) {
     $a[$key] = $value;
   }
@@ -104,7 +109,46 @@ function insert_field($h, $field, $values) {
   record_massupload_data('field_revision_field_'.$field, 'entity_id='.$h['nid']);
 }
 
+function get_filemime($filename) {
+  if (preg_match('/.jpg$/i', $filename)) { return "image/jpeg"; }
+  if (preg_match('/.jpeg$/i', $filename)) { return "image/jpeg"; }
+  if (preg_match('/.png$/i', $filename)) { return "image/png"; }
+  return "image/jpeg";
+}
+
+function get_filesize($filename) {
+  // return filesize($filename);
+  return 314159;
+}
+
+function insert_attached_file($h,$path) {
+  global $glob;
+
+  $fid = db_insert('file_managed')
+    ->fields(array('uid'       => $glob['uid'],
+                   'filename'  => $path,
+                   'uri'       => 'public://' . $glob['image_dir'] . '/' . $path,
+                   'filemime'  => get_filemime($path),
+                   'filesize'  => get_filesize($path),
+                   'status'    => 1,
+                   'timestamp' => $glob['time']))
+    ->execute();
+  record_massupload_data('file_managed', 'fid='.$fid);
+
+  db_insert('file_usage')
+    ->fields(array('fid'    => $fid,
+                   'module' => 'file',
+                   'type'   => 'node',
+                   'id'     => $h['nid'],
+                   'count'  => 1))
+    ->execute();
+  record_massupload_data('file_usage', 'fid='.$fid);
+
+  return $fid;
+}
+
 function process_line($h) {
+  global $glob;
   insert_node($h);
 
   printf("title: %s\n", $h['title']);
@@ -115,33 +159,37 @@ function process_line($h) {
                array('field_description_value'  => $h['description'],
                      'field_description_format' => NULL));
 
+  $delta = 0;
+  foreach (preg_split("/,\s*/", $h['data_files']) as $file) {
+    $fid = insert_attached_file($h, $file);
+    insert_field($h, "data_file",
+                 array('field_data_file_fid'         => $fid,
+                       'field_data_file_display'     => 1,
+                       'field_data_file_description' => NULL),
+                 $delta++
+                 );
+  }
 
   insert_field($h, "associated_report",
                array('field_associated_report_target_id'   => 20));
-
 
   insert_field($h, "background_link2",
                array('field_background_link2_url'          => 'www.google.com',
                      'field_background_link2_title'        => 'CMIP3_TTest'));
 
-
   insert_field($h, "data_type",
                array('field_data_type_value'   => 'Simulated'));
-                     
 
   insert_field($h, "metadata_file",
                array('field_metadata_file_fid'           => 22,
                      'field_metadata_file_display'       => 1));
 
-
   insert_field($h, "region",
                array('field_region_target_id'   => 29));
-
 
   insert_field($h, "source",
                array('field_source_value'    => 'Andrew Buddenberg',
                      'field_source_format'   => NULL));
-
 
   insert_field($h, "supporting_document",
                array('field_supporting_document_fid'           => 23,

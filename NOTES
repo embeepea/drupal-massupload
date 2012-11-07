@@ -1,18 +1,17 @@
-id                     75
-title                  CMIP3, MULTI-MODEL MEAN SIMULATION Temperature Difference (F) from 1971-2000
-description            Simulated ...issions scenario.
-region                 Great Plains
-data_type              Simulated
-var_type               Temperature (F)
-assoc_report           CLIMATE OF THE U.S. GREAT PLAINS
-image_source           Andrew Buddenberg
-data_source_title      CMIP3_TTest
-data_source_url        
-image_files            figures/GreatPlains/CMIP3_Temp_GP.jpg
-data_files             figures/GreatPlains/CMIP3_Temp_GP.jpg, figures/GreatPlains/GP_precip_annual.png, figures/GreatPlains/GP_precip_seasonal_a2.png
-metadata_files         metadata/GreatPlains/Great Plains_75_metadata.html
-doc_files              docs/GreatPlains/Great Plains_75_docs.blah
-
+id                   75
+title                CMIP3, MULTI-MODEL MEAN SIMULATION Temperature Difference (F) from 1971-2000
+description          Simulated difference in ... emissions scenario.
+region               Great Plains
+data_type            Simulated
+var_type             Temperature (F)
+assoc_report         CLIMATE OF THE U.S. GREAT PLAINS
+image_source	     Andrew Buddenberg
+data_source_title    CMIP3_TTest
+data_source_url      NULL
+image_files          figures/GreatPlains/CMIP3_Temp_GP.jpg
+data_files           figures/GreatPlains/CMIP3_Temp_GP.jpg, figures/GreatPlains/GP_precip_annual.png, figures/GreatPlains/GP_precip_seasonal_a2.png
+metadata_files       metadata/GreatPlains/Great Plains_75_metadata.html
+doc_files            docs/GreatPlains/Great Plains_75_docs.blah
 
 region             Great Plains       field_region_target_id  => 29
 var_type           Temperature (F)    field_variable_type_tid => 21
