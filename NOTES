@@ -1,3 +1,10 @@
+PREP:
+  populate var_type vocabulary
+  create image dst dir
+  copy images to dst dir
+  create image thumbnail dst dir(s)
+  set permissions on image dst dir(s), thumbnail dst dir(s), copied images
+
 id                   75
 title                CMIP3, MULTI-MODEL MEAN SIMULATION Temperature Difference (F) from 1971-2000
 description          Simulated difference in ... emissions scenario.
