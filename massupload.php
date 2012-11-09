@@ -2,15 +2,66 @@
 
 global $glob;
 $glob = array('input_dir'           => dirname(realpath(__FILE__)),
-              'csvfile'             => "test.csv",
 
-              'image_dir'           => "images/dir/goes/here",
+              //'csvfile'             => "test.csv",
+              'csvfile'             => "all.csv",
+
+              'image_src_path'           => dirname(realpath(__FILE__)) . "/export_test2",
+              'image_dst_path'           => "a",
 
               // drupal user id of user who should own uploaded content:
               'uid'                 => 5,
 
-              'time'                => time()
+              'time'                => time(),
+
+              'regions'             => array(),
+
+              'var_types'           => array(),
+
+              'var_type_translations' => array('Temperature (F)'          => 'Temperature',
+                                               'Precipitation (inches)'   => 'Precipitation',
+                                               'Greenhouse gas emissions' => 'Greenhouse Gas Emissions',
+                                               'CO2 concentrations'       => 'CO2 Concentrations',
+                                               'Streamflow'               => 'Stream Flow',
+                                               'Lake elevation'           => 'Lake Elevation')
+
               );
+
+$result = db_select('node', 'n')
+    ->fields('n', array('nid','title'))
+    ->condition('type', 'region', '=')
+    ->execute();
+
+foreach ($result as $record) {
+  $glob['regions'][$record->{title}] = $record->{nid};
+}
+
+function region_title_to_nid($region_title) {
+  global $glob;
+  if ($region_title == 'US') {
+    $region_title = 'National';
+  }
+  return $glob['regions'][$region_title];
+}
+
+
+$result = db_query("select tid,name from taxonomy_term_data where vid = (select vid from taxonomy_vocabulary where name='Variable Type')");
+foreach ($result as $record) {
+  $glob['var_types'][$record->{name}] = $record->{tid};
+}
+
+function var_type_to_tid($var_type) {
+  global $glob;
+
+  foreach ($glob['var_type_translations'] as $src => $dst) {
+    if ($var_type == $src) {
+      $var_type = $dst;
+      break;
+    }
+  }
+
+  return $glob['var_types'][$var_type];
+}
 
 if (!($fp = fopen(sprintf("%s/%s", $glob['input_dir'], $glob['csvfile']), "r"))) {
   die("could not open CSV input file: " . $glob['csvfile']);
@@ -113,23 +164,24 @@ function get_filemime($filename) {
   if (preg_match('/.jpg$/i', $filename)) { return "image/jpeg"; }
   if (preg_match('/.jpeg$/i', $filename)) { return "image/jpeg"; }
   if (preg_match('/.png$/i', $filename)) { return "image/png"; }
+  printf("ERROR: unknown mime type (using image/jpeg) for file: %s\n", $filename);
   return "image/jpeg";
 }
 
 function get_filesize($filename) {
-  // return filesize($filename);
-  return 314159;
+  return filesize($filename);
+  //return 314159;
 }
 
-function insert_attached_file($h,$path) {
+function insert_attached_file($h,$file) {
   global $glob;
 
   $fid = db_insert('file_managed')
     ->fields(array('uid'       => $glob['uid'],
-                   'filename'  => $path,
-                   'uri'       => 'public://' . $glob['image_dir'] . '/' . $path,
-                   'filemime'  => get_filemime($path),
-                   'filesize'  => get_filesize($path),
+                   'filename'  => $file,
+                   'uri'       => 'public://' . $glob['image_dst_path'] . '/' . $file,
+                   'filemime'  => get_filemime($file),
+                   'filesize'  => get_filesize($glob['image_src_path'] . '/' . $file),
                    'status'    => 1,
                    'timestamp' => $glob['time']))
     ->execute();
@@ -147,56 +199,291 @@ function insert_attached_file($h,$path) {
   return $fid;
 }
 
+function validate_image_files(&$h) {
+  global $glob;
+  $badfiles = array();
+  foreach (preg_split("/,\s*/", $h['image_files']) as $file) {
+    if ($file) {
+      $path = $glob['image_src_path'] . "/" . $file;
+      if (file_exists($path)) {
+        list ($width,$height) = getimagesize($path);
+        if ($width == 0 || $height == 0) {
+          $badfiles[] = "'" . $file . "'";
+        }
+      } else {
+        $badfiles[] = "'" . $file . "'";
+      }
+    }
+  }
+  if (count($badfiles) > 0) {
+    $h['image_files_error_message'] = "can't read image_file width/height for file(s): " . join(",", $badfiles);
+    return false;
+  }
+  return true;
+}
+
+function validate_data_files(&$h) {
+  global $glob;
+  $badfiles = array();
+  foreach (preg_split("/,\s*/", $h['data_files']) as $file) {
+    if ($file) {
+      $path = $glob['image_src_path'] . "/" . $file;
+      if (file_exists($path)) {
+        $size = get_filesize($path);
+        if ($size <= 0) {
+          $badfiles[] = "'" . $file . "'";
+        }
+      } else {
+        $badfiles[] = "'" . $file . "'";
+      }
+    }
+  }
+  if (count($badfiles) > 0) {
+    $h['data_files_error_message'] = "can't read data_file(s): " . join(",", $badfiles);
+    return false;
+  }
+  return true;
+}
+
+function validate_metadata_files(&$h) {
+  global $glob;
+  $badfiles = array();
+  foreach (preg_split("/,\s*/", $h['metadata_files']) as $file) {
+    if ($file) {
+      $path = $glob['image_src_path'] . "/" . $file;
+      if (file_exists($path)) {
+        $size = get_filesize($path);
+        if ($size <= 0) {
+          $badfiles[] = "'" . $file . "'";
+        }
+      } else {
+        $badfiles[] = "'" . $file . "'";
+      }
+    }
+  }
+  if (count($badfiles) > 0) {
+    $h['metadata_files_error_message'] = "can't read metadata_file(s): " . join(",", $badfiles);
+    return false;
+  }
+  return true;
+}
+
+function validate_doc_files(&$h) {
+  global $glob;
+  $badfiles = array();
+  foreach (preg_split("/,\s*/", $h['doc_files']) as $file) {
+    if ($file) {
+      $path = $glob['image_src_path'] . "/" . $file;
+      if (file_exists($path)) {
+        $size = get_filesize($path);
+        if ($size <= 0) {
+          $badfiles[] = "'" . $file . "'";
+        }
+      } else {
+        $badfiles[] = "'" . $file . "'";
+      }
+    }
+  }
+  if (count($badfiles) > 0) {
+    $h['doc_files_error_message'] = "can't read doc_file(s): " . join(",", $badfiles);
+    return false;
+  }
+  return true;
+}
+
 function process_line($h) {
   global $glob;
+
+  #if (!$h['image_files']) { return; }
+  #if ($h['id'] != '75') { return; }
+
+  printf("\n");
+  printf("Reading source id: %s\n", $h['id']);
+  printf("            Title: %s\n", $h['title']);
+
+  if (!validate_image_files($h)) {
+    printf("  !! ERROR: %s\n", $h['image_files_error_message']);
+    return;
+  }
+
+  if (!validate_data_files($h)) {
+    printf("  !! ERROR: %s\n", $h['data_files_error_message']);
+    return;
+  }
+
+  if (!validate_metadata_files($h)) {
+    printf("  !! ERROR: %s\n", $h['metadata_files_error_message']);
+    return;
+  }
+
+  if (!validate_doc_files($h)) {
+    printf("  !! ERROR: %s\n", $h['doc_files_error_message']);
+    return;
+  }
+
   insert_node($h);
+  printf("     inserted nid: %s\n", $h['nid']);
+  printf("              vid: %s\n", $h['vid']);
 
-  printf("title: %s\n", $h['title']);
-  printf("  nid: %s\n", $h['nid']);
-  printf("  vid: %s\n", $h['vid']);
+  /*
+   *  input column(s): image_files
+   *     drupal field: image
+   */
+  $delta = 0;
+  foreach (preg_split("/,\s*/", $h['image_files']) as $file) {
+    if ($file) {
+      list ($width,$height) = getimagesize($glob['image_src_path'] . "/" . $file);
+      printf("  attaching [%4d X %4d] image: %s\n", $width, $height, $file);
+      $fid = insert_attached_file($h, $file);
+      insert_field($h, "image",
+                   array('field_image_fid'         => $fid,
+                         'field_image_alt'         => NULL,
+                         'field_image_title'       => NULL,
+                         'field_image_width'       => $width,
+                         'field_image_height'      => $height),
+                   $delta++
+                   );
+    }
+  }
 
+  /*
+   *  input column(s): data_source_url, data_source_title
+   *     drupal field: background_link2
+   */
+  if ($h['data_source_url'] || $h['data_source_title']) {
+    insert_field($h, "background_link2",
+                 array('field_background_link2_url'          => $h['data_source_url'],
+                       'field_background_link2_title'        => $h['data_source_title']));
+  } else {
+    // report missing link
+  }
+
+
+  /*
+   *  input column(s): description
+   *     drupal field: description
+   */
   insert_field($h, "description",
                array('field_description_value'  => $h['description'],
                      'field_description_format' => NULL));
 
+  /*
+   *  input column(s): data_files
+   *     drupal field: data_file
+   */
   $delta = 0;
   foreach (preg_split("/,\s*/", $h['data_files']) as $file) {
-    $fid = insert_attached_file($h, $file);
-    insert_field($h, "data_file",
-                 array('field_data_file_fid'         => $fid,
-                       'field_data_file_display'     => 1,
-                       'field_data_file_description' => NULL),
-                 $delta++
-                 );
+    if ($file) {
+      printf("  attaching data_file: %s\n", $file);
+      $fid = insert_attached_file($h, $file);
+      insert_field($h, "data_file",
+                   array('field_data_file_fid'         => $fid,
+                         'field_data_file_display'     => 1,
+                         'field_data_file_description' => NULL),
+                   $delta++
+                   );
+    }
   }
 
-  insert_field($h, "associated_report",
-               array('field_associated_report_target_id'   => 20));
+  /*
+   *  input column(s): associated_report
+   *     drupal field: associated_report
+   */
+  //
+  // NOTE: don't populate this field for now; ask for clarification
+  //       about what to do, since we don't have the reports uploaded yet
+  //       (or ever --- do they want this field at all any more?)
+  //
+  //insert_field($h, "associated_report",
+  //             array('field_associated_report_target_id'   => 20));
 
-  insert_field($h, "background_link2",
-               array('field_background_link2_url'          => 'www.google.com',
-                     'field_background_link2_title'        => 'CMIP3_TTest'));
-
+  /*
+   *  input column(s): data_type
+   *     drupal field: data_type
+   */
+  if (!$h['data_type']) {
+    printf("  WARNING: empty data_type field\n");
+  }
   insert_field($h, "data_type",
-               array('field_data_type_value'   => 'Simulated'));
+               array('field_data_type_value'   => $h['data_type']));
 
-  insert_field($h, "metadata_file",
-               array('field_metadata_file_fid'           => 22,
-                     'field_metadata_file_display'       => 1));
+  /*
+   *  input column(s): metadata_files
+   *     drupal field: metadata_file
+   */
+  $delta = 0;
+  foreach (preg_split("/,\s*/", $h['metadata_files']) as $file) {
+    if ($file) {
+      printf("  attaching metadata_file: %s\n", $file);
+      $fid = insert_attached_file($h, $file);
+      insert_field($h, "metadata_file",
+                   array('field_metadata_file_fid'         => $fid,
+                         'field_metadata_file_display'     => 1,
+                         'field_metadata_file_description' => NULL),
+                   $delta++
+                   );
+    }
+  }
 
-  insert_field($h, "region",
-               array('field_region_target_id'   => 29));
+  /*
+   *  input column(s): region
+   *     drupal field: region
+   */
+  $region_nid = region_title_to_nid($h['region']);
+  if ($region_nid) {
+    insert_field($h, "region",
+                 array('field_region_target_id'   => $region_nid));
+  } else {
+    printf("  WARNING: unknown region '%s'\n", $h['region']);
+  }
 
-  insert_field($h, "source",
-               array('field_source_value'    => 'Andrew Buddenberg',
-                     'field_source_format'   => NULL));
+  /*
+   *  input column(s): image_source
+   *     drupal field: source
+   */
+  if ($h['image_source']) {
+    insert_field($h, "source",
+                 array('field_source_value'    => $h['image_source'],
+                       'field_source_format'   => NULL));
+  } else {
+    printf("  WARNING: empty image_source\n");
+  }
 
-  insert_field($h, "supporting_document",
-               array('field_supporting_document_fid'           => 23,
-                     'field_supporting_document_display'       => 1));
+  /*
+   *  input column(s): doc_files
+   *     drupal field: supporting_document
+   */
+  $delta = 0;
+  foreach (preg_split("/,\s*/", $h['doc_files']) as $file) {
+    if ($file) {
+      printf("  attaching supporting_document: %s\n", $file);
+      $fid = insert_attached_file($h, $file);
+      insert_field($h, "supporting_document",
+                   array('field_supporting_document_fid'         => $fid,
+                         'field_supporting_document_display'     => 1,
+                         'field_supporting_document_description' => NULL),
+                   $delta++
+                   );
+    }
+  }
 
-  insert_field($h, "variable_type",
-               array('field_variable_type_tid'   => 21));
+  /*
+   *  input column(s): var_type
+   *     drupal field: variable_type
+   */
+  $delta = 0;
+  foreach (preg_split("/,\s*/", $h['var_type']) as $var_type) {
+    if ($var_type) {
+      $tid = var_type_to_tid($var_type);
+      if ($tid) {
+        insert_field($h, "variable_type",
+                     array('field_variable_type_tid'   => $tid),
+                     $delta++);
+      } else {
+        printf("  WARNING: Unknown var_type: '%s'\n", $var_type);
+      }
+    }
+  }
 
 }
 

@@ -1,0 +1,3 @@
+#! /bin/bash
+
+cat $* | grep -v 'CREATE DATABASE  IF NOT EXISTS `NCA_Image_Metadata`' | grep -v 'USE `NCA_Image_Metadata`' 

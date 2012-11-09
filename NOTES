@@ -33,10 +33,10 @@ doc_files            docs/GreatPlains/Great Plains_75_docs.blah
         +----------+---------------------------+-------------------------+-------------+
         | field_id | field_name                | type                    | cardinality |
         +----------+---------------------------+-------------------------+-------------+
+        |        4 | field_image               | image                   |          -1 | image_files
         |        6 | field_background_link2    | link_field              |          -1 | data_source_title, data_source_url
         |        8 | field_data_file           | file                    |          -1 | data_files
         |       12 | field_description         | text_long               |           1 | description
-        |        4 | field_image               | image                   |          -1 | image_files
         |       16 | field_metadata_file       | file                    |          -1 | metadata_files
         |       22 | field_source              | text                    |           1 | image_source
         |       23 | field_supporting_document | file                    |          -1 | doc_files

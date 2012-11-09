@@ -72,6 +72,19 @@ EOF
 
 sub quote {
     my $string = shift;
+
+    $string =~ s/[^[:print:]]+//g;
+
+#    $string =~ s/Â°//g;
+#    $string =~ s/\Q°\E//g;
+#    $string =~ s/\Q‘\E//g;
+#    $string =~ s/\QÂ’\E/'/g;
+#
+#    $string =~ tr/Â’//;
+#
+#    $string =~ s/^.*Kendall//g;
+#    $string =~ s/s tau.*$//g;
+
     $string =~ s/"/\\"/g;
     return '"' . $string . '"';
 }
@@ -80,6 +93,7 @@ $dbh = DoQuery::Connect($DbCredentials::database, $DbCredentials::username, $DbC
 
 $sth0 = DoQuery::DoQuery("select id from image");
 while ($hr0 = $sth0->fetchrow_hashref()) {
+    #if ($hr0->{id} ne "14") { next; }
     $sth = DoQuery::DoQuery(make_query($hr0->{id}));
     if ($hr = $sth->fetchrow_hashref()) {
         @fields = (
