@@ -13,9 +13,39 @@ data_files           figures/GreatPlains/CMIP3_Temp_GP.jpg, figures/GreatPlains/
 metadata_files       metadata/GreatPlains/Great Plains_75_metadata.html
 doc_files            docs/GreatPlains/Great Plains_75_docs.blah
 
-region             Great Plains       field_region_target_id  => 29
-var_type           Temperature (F)    field_variable_type_tid => 21
-assoc_report       Southwest Climate  field_associated_report_target_id => 20
+------------------------------------------------------------------------
+
+'Data Library Submission' Content Type Fields:
+
+   (each field is stored in its own table, named field_data_FIELD_NAME;
+    for example: field_data_field_description)
+
+        select fci.field_id,
+               fci.field_name,
+               fc.type,
+               fc.cardinality
+          from field_config_instance fci,
+               field_config fc
+         where fci.field_id = fc.id
+           and fci.bundle='data_catalog'
+        ;
+
+        +----------+---------------------------+-------------------------+-------------+
+        | field_id | field_name                | type                    | cardinality |
+        +----------+---------------------------+-------------------------+-------------+
+        |        6 | field_background_link2    | link_field              |          -1 | data_source_title, data_source_url
+        |        8 | field_data_file           | file                    |          -1 | data_files
+        |       12 | field_description         | text_long               |           1 | description
+        |        4 | field_image               | image                   |          -1 | image_files
+        |       16 | field_metadata_file       | file                    |          -1 | metadata_files
+        |       22 | field_source              | text                    |           1 | image_source
+        |       23 | field_supporting_document | file                    |          -1 | doc_files
+        |       30 | field_variable_type       | taxonomy_term_reference |           1 | var_type
+        |       38 | field_data_type           | list_text               |          -1 | data_type
+        |       39 | field_associated_report   | entityreference         |           1 | make optional, don't populate for now, ask for clarification...
+        |       40 | field_region              | entityreference         |           1 | region
+        +----------+---------------------------+-------------------------+-------------+
+        11 rows in set (0.00 sec)
 
 ------------------------------------------------------------------------
 
@@ -600,3 +630,12 @@ table field_revision_field_version
     | field_version_value | int(11)          | YES  |     | NULL    |       |
     +---------------------+------------------+------+-----+---------+-------+
 Empty set (0.00 sec)
+
+************************************************************************
+************************************************************************
+************************************************************************
+
+region             Great Plains       field_region_target_id  => 29
+var_type           Temperature (F)    field_variable_type_tid => 21
+assoc_report       Southwest Climate  field_associated_report_target_id => 20
+

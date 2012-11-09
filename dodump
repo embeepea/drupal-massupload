@@ -90,7 +90,7 @@ while ($hr0 = $sth0->fetchrow_hashref()) {
             quote(  $hr->{data_type}          ) || "''",
             quote(  $hr->{var_type}           ) || "''",
             quote(  $hr->{assoc_report}       ) || "''",
-            quote(  $hr->{image_source	}   ) || "''",
+            quote(  $hr->{image_source}       ) || "''",
             quote(  $hr->{data_source_title}  ) || "''",
             quote(  $hr->{data_source_url}    ) || "''",
             quote(  $hr->{image_files}        ) || "''",
