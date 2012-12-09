@@ -11,7 +11,7 @@ select
 	i.id as id,
 	i.title as title,
 	i.description as description,
- 	doc.abbr as region,
+ 	doc.abrev as region,
   	group_concat(distinct ds.type order by ds.type separator ', ') data_type,
 	i.attributes as var_type,
  	doc.name as assoc_report,
