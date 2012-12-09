@@ -1,9 +1,27 @@
+local database credentials in DbCredentials.pm
+
+first, load local database by hand from .sql file in zip archive
+
+./dodump  > all.csv
+
+drush scr report.php
+
 PREP:
   populate var_type vocabulary
+     use query
+         select tid,name from taxonomy_term_data where vid = (select vid from taxonomy_vocabulary where name='Variable Type')
+     to see the current list of terms; use Druapl UI to add terms as needed
+     Also, adjust 'var_type_translations' array in masupload.php as needed.
   create image dst dir
+         mkdir ./default/files/b
   copy images to dst dir
+         ( cd Dump-2012-12-04 ;  tar cf - docs figures metadata ) | ( cd /var/dev.nemac.org/html/mbp5/sites/default/files/b ; tar xvf - )
   create image thumbnail dst dir(s)
+         mkdir ./default/files/styles/thumbnail/public/b/...
   set permissions on image dst dir(s), thumbnail dst dir(s), copied images
+
+drush scr massupload.php
+
 
 id                   75
 title                CMIP3, MULTI-MODEL MEAN SIMULATION Temperature Difference (F) from 1971-2000

@@ -6,8 +6,8 @@ $glob = array('input_dir'           => dirname(realpath(__FILE__)),
               //'csvfile'             => "test.csv",
               'csvfile'             => "all.csv",
 
-              'image_src_path'           => dirname(realpath(__FILE__)) . "/export_test2",
-              'image_dst_path'           => "a",
+              'image_src_path'           => dirname(realpath(__FILE__)) . "/Dump-2012-12-04",
+              'image_dst_path'           => "b",
 
               // drupal user id of user who should own uploaded content:
               'uid'                 => 5,
@@ -18,12 +18,55 @@ $glob = array('input_dir'           => dirname(realpath(__FILE__)),
 
               'var_types'           => array(),
 
-              'var_type_translations' => array('Temperature (F)'          => 'Temperature',
-                                               'Precipitation (inches)'   => 'Precipitation',
-                                               'Greenhouse gas emissions' => 'Greenhouse Gas Emissions',
-                                               'CO2 concentrations'       => 'CO2 Concentrations',
-                                               'Streamflow'               => 'Stream Flow',
-                                               'Lake elevation'           => 'Lake Elevation')
+              'var_type_translations' => array(
+                                               'Billion-dollar weather/climate disasters'     => 'Billion-Dollar Weather/Climate Disasters',
+                                               'CO2 concentrations'                           => 'CO2 Concentrations',
+                                               'CO2 concentrations'                           => 'CO2 Concentrations',
+                                               'Cost of damage'                               => 'Cost of Damage',
+                                               'Drought trends'                               => 'Drought Trends',
+                                               'Freezing level'                               => 'Freezing Level',
+                                               'Greenhouse gas emissions'                     => 'Greenhouse Gas Emissions',
+                                               'Hurricane strikes'                            => 'Hurricane Strikes',
+                                               'Ice area'                                     => 'Ice Area',
+                                               'Lake elevation'                               => 'Lake Water Level',
+                                               'Lake ice cover'                               => 'Lake Ice Cover',
+                                               'Lake level'                                   => 'Lake Water Level',
+                                               'Lake water level'                             => 'Lake Water Level',
+                                               'PDO Index'                                    => 'PDO Index',
+                                               'Precipitation (inches)'                       => 'Precipitation',
+                                               'Precipitation'                                => 'Precipitation',
+                                               'River flow'                                   => 'Stream Flow',
+                                               'River volume'                                 => 'Stream Flow',
+                                               'SST'                                          => 'Sea Surface Temperature',
+                                               'Sea ice area'                                 => 'Sea Ice Area',
+                                               'Sea level'                                    => 'Sea Level',
+                                               'Snow depth'                                   => 'Snow Depth',
+                                               'Storm surge height'                           => 'Storm Surge Height',
+                                               'Streamflow'                                   => 'Stream Flow',
+                                               'TC occurrence'                                => 'TC Occurrence',
+                                               'Temperature (F)'                              => 'Temperature',
+                                               'Temperature'                                  => 'Temperature',
+                                               'Tornadoe count'                               => 'Tornado Count',
+                                               'Water level'                                  => 'Lake Water Level',
+                                               'Water temperature'                            => 'Lake Water Surface Temperature',
+                                               'Wind speed'                                   => 'Wind Speed',
+                                               'Wind'                                         => 'Wind Speed'
+                                               ),
+
+              'region_translations' => array(
+                                             'SE' =>                    'Southeast',
+                                             'GP' =>                    'Great Plains',
+                                             'NE' =>                    'Northeast',
+                                             'SW' =>                    'Southwest',
+                                             'NW' =>                    'Northwest',
+                                             'MW' =>                    'Midwest',
+                                             'US' =>                    'National',
+                                             'AK' =>                    'Alaska',
+                                             'PI' =>                    'Pacific Islands',
+                                             ),
+
+
+
 
               );
 
@@ -38,6 +81,14 @@ foreach ($result as $record) {
 
 function region_title_to_nid($region_title) {
   global $glob;
+
+  foreach ($glob['region_translations'] as $src => $dst) {
+    if ($region_title == $src) {
+      $region_title = $dst;
+      break;
+    }
+  }
+
   if ($region_title == 'US') {
     $region_title = 'National';
   }
@@ -164,6 +215,9 @@ function get_filemime($filename) {
   if (preg_match('/.jpg$/i', $filename)) { return "image/jpeg"; }
   if (preg_match('/.jpeg$/i', $filename)) { return "image/jpeg"; }
   if (preg_match('/.png$/i', $filename)) { return "image/png"; }
+  if (preg_match('/.gif$/i', $filename)) { return "image/gif"; }
+  if (preg_match('/.tiff?$/i', $filename)) { return "image/tiff"; }
+  if (preg_match('/.html$/i', $filename)) { return "text/html"; }
   printf("ERROR: unknown mime type (using image/jpeg) for file: %s\n", $filename);
   return "image/jpeg";
 }
@@ -403,9 +457,21 @@ function process_line($h) {
    */
   if (!$h['data_type']) {
     printf("  WARNING: empty data_type field\n");
+  } else {
+    $delta = 0;
+    if (preg_match('/observ$/i', $h['data_type'])) {
+      insert_field($h, "data_type",
+                   array('field_data_type_value'   => 'Observed'),
+                   $delta++
+                   );
+    }
+    if (preg_match('/simul$/i', $h['data_type'])) {
+      insert_field($h, "data_type",
+                   array('field_data_type_value'   => 'Simulated'),
+                   $delta++
+                   );
+    }
   }
-  insert_field($h, "data_type",
-               array('field_data_type_value'   => $h['data_type']));
 
   /*
    *  input column(s): metadata_files

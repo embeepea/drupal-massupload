@@ -58,22 +58,37 @@ while ($h = csv_array_to_hash(fgetcsv($fp))) {
   $var_types[$h['var_type']] = 1;
 }
 
-printf("Regions:\n");
+printf("=============================================\nRegions in csv file:\n");
 foreach (array_keys($regions) as $region) {
   printf("  %s\n", $region);
 }
+$result = db_select('node', 'n')
+    ->fields('n', array('nid','title'))
+    ->condition('type', 'region', '=')
+    ->execute();
+printf("\nRegions Drupal (Nodes of Type 'Region'):\n");
+printf("    %30s    %5s\n", "Name", "NID");
+foreach ($result as $record) {
+  printf("    %30s    %5s\n", $record->{title}, $record->{nid});
+}
 
-printf("Reports:\n");
+printf("=============================================\nReports in csv file:\n");
 foreach (array_keys($reports) as $report) {
   printf("  %s\n", $report);
 }
 
-printf("Data Types:\n");
+printf("=============================================\nData Types in csv file:\n");
 foreach (array_keys($data_types) as $data_type) {
   printf("  %s\n", $data_type);
 }
 
-printf("Var Types:\n");
+printf("=============================================\nVar Types in csv file:\n");
 foreach (array_keys($var_types) as $var_type) {
   printf("  %s\n", $var_type);
+}
+$result = db_query("select tid,name from taxonomy_term_data where vid = (select vid from taxonomy_vocabulary where name='Variable Type')");
+printf("\nVar Types in Drupal (Taxonomy Vocabulary 'Variable Type'):\n");
+printf("    %30s    %5s\n", "Name", "TID");
+foreach ($result as $record) {
+  printf("    %30s    %5s\n", $record->{name}, $record->{tid});
 }
