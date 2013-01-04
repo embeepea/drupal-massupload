@@ -6,7 +6,7 @@ $glob = array('input_dir'           => dirname(realpath(__FILE__)),
               //'csvfile'             => "test.csv",
               'csvfile'             => "all.csv",
 
-              'image_src_path'           => dirname(realpath(__FILE__)) . "/Dump-2012-12-21",
+              'image_src_path'           => dirname(realpath(__FILE__)) . "/Dump-2013-01-04",
               'image_dst_path'           => "a",
 
               // drupal user id of user who should own uploaded content:
