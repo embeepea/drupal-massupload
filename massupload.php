@@ -1,148 +1,6 @@
 <?php
 
-global $glob;
-$glob = array('input_dir'           => dirname(realpath(__FILE__)),
-
-              //'csvfile'             => "test.csv",
-              'csvfile'             => "all.csv",
-
-              'image_src_path'           => dirname(realpath(__FILE__)) . "/Dump-2012-12-21",
-              'image_dst_path'           => "b",
-
-              // drupal user id of user who should own uploaded content:
-              'uid'                 => 5,
-
-              'time'                => time(),
-
-              'regions'             => array(),
-              'reports'             => array(),
-
-              'var_types'           => array(),
-
-              'var_type_translations' => array(
-                                               'Billion-dollar weather/climate disasters'     => 'Billion-Dollar Weather/Climate Disasters',
-                                               'CO2 concentrations'                           => 'CO2 Concentrations',
-                                               'CO2 concentrations'                           => 'CO2 Concentrations',
-                                               'Cost of damage'                               => 'Cost of Damage',
-                                               'Drought trends'                               => 'Drought Trends',
-                                               'Freezing level'                               => 'Freezing Level',
-                                               'Greenhouse gas emissions'                     => 'Greenhouse Gas Emissions',
-                                               'Hurricane strikes'                            => 'Hurricane Strikes',
-                                               'Ice area'                                     => 'Ice Area',
-                                               'Lake elevation'                               => 'Lake Water Level',
-                                               'Lake ice cover'                               => 'Lake Ice Cover',
-                                               'Lake level'                                   => 'Lake Water Level',
-                                               'Lake water level'                             => 'Lake Water Level',
-                                               'PDO Index'                                    => 'PDO Index',
-                                               'Precipitation (inches)'                       => 'Precipitation',
-                                               'Precipitation'                                => 'Precipitation',
-                                               'River flow'                                   => 'Stream Flow',
-                                               'River volume'                                 => 'Stream Flow',
-                                               'SST'                                          => 'Sea Surface Temperature',
-                                               'Sea ice area'                                 => 'Sea Ice Area',
-                                               'Sea level'                                    => 'Sea Level',
-                                               'Snow depth'                                   => 'Snow Depth',
-                                               'Storm surge height'                           => 'Storm Surge Height',
-                                               'Streamflow'                                   => 'Stream Flow',
-                                               'TC occurrence'                                => 'TC Occurrence',
-                                               'Temperature (F)'                              => 'Temperature',
-                                               'Temperature'                                  => 'Temperature',
-                                               'Tornadoe count'                               => 'Tornado Count',
-                                               'Water level'                                  => 'Lake Water Level',
-                                               'Water temperature'                            => 'Lake Water Surface Temperature',
-                                               'Wind speed'                                   => 'Wind Speed',
-                                               'Wind'                                         => 'Wind Speed'
-                                               ),
-
-              'region_translations' => array(
-                                             'SE' =>                    'Southeast',
-                                             'GP' =>                    'Great Plains',
-                                             'NE' =>                    'Northeast',
-                                             'SW' =>                    'Southwest',
-                                             'NW' =>                    'Northwest',
-                                             'MW' =>                    'Midwest',
-                                             'US' =>                    'National',
-                                             'AK' =>                    'Alaska',
-                                             'PI' =>                    'Pacific Islands',
-                                             ),
-
-              'report_translations' => array(),
-
-              );
-
-$result = db_select('node', 'n')
-    ->fields('n', array('nid','title'))
-    ->condition('type', 'region', '=')
-    ->execute();
-
-foreach ($result as $record) {
-  $glob['regions'][$record->{title}] = $record->{nid};
-}
-
-function region_title_to_nid($region_title) {
-  global $glob;
-
-  foreach ($glob['region_translations'] as $src => $dst) {
-    if ($region_title == $src) {
-      $region_title = $dst;
-      break;
-    }
-  }
-
-  if ($region_title == 'US') {
-    $region_title = 'National';
-  }
-  return $glob['regions'][$region_title];
-}
-
-
-########################################################################
-
-$result = db_select('node', 'n')
-    ->fields('n', array('nid','title'))
-    ->condition('type', 'report', '=')
-    ->execute();
-
-foreach ($result as $record) {
-  $glob['reports'][$record->{title}] = $record->{nid};
-}
-
-function report_title_to_nid($report_title) {
-  global $glob;
-
-  foreach ($glob['report_translations'] as $src => $dst) {
-    if ($report_title == $src) {
-      $report_title = $dst;
-      break;
-    }
-  }
-
-  if ($report_title == 'US') {
-    $report_title = 'National';
-  }
-  return $glob['reports'][$report_title];
-}
-
-
-########################################################################
-
-$result = db_query("select tid,name from taxonomy_term_data where vid = (select vid from taxonomy_vocabulary where name='Variable Type')");
-foreach ($result as $record) {
-  $glob['var_types'][$record->{name}] = $record->{tid};
-}
-
-function var_type_to_tid($var_type) {
-  global $glob;
-
-  foreach ($glob['var_type_translations'] as $src => $dst) {
-    if ($var_type == $src) {
-      $var_type = $dst;
-      break;
-    }
-  }
-
-  return $glob['var_types'][$var_type];
-}
+include 'glob.php';
 
 if (!($fp = fopen(sprintf("%s/%s", $glob['input_dir'], $glob['csvfile']), "r"))) {
   die("could not open CSV input file: " . $glob['csvfile']);
@@ -473,13 +331,14 @@ function process_line($h) {
    *  input column(s): associated_report
    *     drupal field: associated_report
    */
-  //
-  // NOTE: don't populate this field for now; ask for clarification
-  //       about what to do, since we don't have the reports uploaded yet
-  //       (or ever --- do they want this field at all any more?)
-  //
-  //insert_field($h, "associated_report",
-  //             array('field_associated_report_target_id'   => 20));
+  $report_nid = report_title_to_nid($h['assoc_report']);
+  if ($report_nid) {
+    insert_field($h, "associated_report",
+                 array('field_associated_report_target_id'   => $report_nid));
+  } else {
+    printf("  WARNING: unknown report '%s'\n", $h['assoc_report']);
+  }
+
 
   /*
    *  input column(s): data_type
@@ -538,9 +397,9 @@ function process_line($h) {
    *     drupal field: source
    */
   if ($h['image_source']) {
-    insert_field($h, "source",
-                 array('field_source_value'    => $h['image_source'],
-                       'field_source_format'   => NULL));
+    insert_field($h, "imgsrc",
+                 array('field_imgsrc_value'    => $h['image_source'],
+                       'field_imgsrc_format'   => NULL));
   } else {
     printf("  WARNING: empty image_source\n");
   }

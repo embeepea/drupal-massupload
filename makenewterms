@@ -1,19 +1,19 @@
 #! /usr/bin/perl
 
 @newterms = (
-    'Disasters',
-    'Drought',
-    'Greenhouse Gases',
-    'Ice',
-    'Lakes',
-    'Models',
-    'Rivers',
-    'Snow',
-    'Tornadoes',
-    'Tropical Cyclones',
-    'Water Level',
-    'Weather',
-    'Wind'
+'Greenhouse Gases',
+'Snow',
+'Rivers',
+'Water Level',
+'Tornadoes',
+'Models',
+'Lakes',
+'Tropical Cyclones',
+'Ice',
+'Wind',
+'Disasters',
+'Weather',
+'Drought',
     );
 
 sub sql {
