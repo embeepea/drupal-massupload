@@ -4,8 +4,6 @@ global $glob;
 $glob = array('input_dir'           => dirname(realpath(__FILE__)),
               'csvfile'             => "all.csv",
 
-              'image_dir'           => "images/dir/goes/here",
-
               // drupal user id of user who should own uploaded content:
               'uid'                 => 5,
 
@@ -49,6 +47,7 @@ $regions = array();
 $reports = array();
 $data_types = array();
 $var_types = array();
+$number_of_reportless_entries = 0;
 while ($h = csv_array_to_hash(fgetcsv($fp))) {
   ++$line;
   //printf("line %4d: (id=%s) %s\n", $line, $h['id'], $h['region']);
@@ -56,6 +55,9 @@ while ($h = csv_array_to_hash(fgetcsv($fp))) {
   $reports[$h['assoc_report']] = 1;
   $data_types[$h['data_type']] = 1;
   $var_types[$h['var_type']] = 1;
+  if (! $h['assoc_report']) {
+    ++$number_of_reportless_entries;
+  }
 }
 
 printf("=============================================\nRegions in csv file:\n");
@@ -66,7 +68,7 @@ $result = db_select('node', 'n')
     ->fields('n', array('nid','title'))
     ->condition('type', 'region', '=')
     ->execute();
-printf("\nRegions Drupal (Nodes of Type 'Region'):\n");
+printf("\nRegions in Drupal (Nodes of Type 'Region'):\n");
 printf("    %30s    %5s\n", "Name", "NID");
 foreach ($result as $record) {
   printf("    %30s    %5s\n", $record->{title}, $record->{nid});
@@ -76,6 +78,8 @@ printf("=============================================\nReports in csv file:\n");
 foreach (array_keys($reports) as $report) {
   printf("  %s\n", $report);
 }
+printf("\nNumber of entries with no report: %1d\n", $number_of_reportless_entries);
+
 
 printf("=============================================\nData Types in csv file:\n");
 foreach (array_keys($data_types) as $data_type) {

@@ -91,6 +91,9 @@ sub quote {
 
 $dbh = DoQuery::Connect($DbCredentials::database, $DbCredentials::username, $DbCredentials::password);
 
+# add blank line to top of file:
+printf("\n");
+
 $sth0 = DoQuery::DoQuery("select id from image");
 while ($hr0 = $sth0->fetchrow_hashref()) {
     #if ($hr0->{id} ne "14") { next; }

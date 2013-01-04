@@ -6,7 +6,7 @@ $glob = array('input_dir'           => dirname(realpath(__FILE__)),
               //'csvfile'             => "test.csv",
               'csvfile'             => "all.csv",
 
-              'image_src_path'           => dirname(realpath(__FILE__)) . "/Dump-2012-12-04",
+              'image_src_path'           => dirname(realpath(__FILE__)) . "/Dump-2012-12-21",
               'image_dst_path'           => "b",
 
               // drupal user id of user who should own uploaded content:
@@ -15,6 +15,7 @@ $glob = array('input_dir'           => dirname(realpath(__FILE__)),
               'time'                => time(),
 
               'regions'             => array(),
+              'reports'             => array(),
 
               'var_types'           => array(),
 
@@ -65,8 +66,7 @@ $glob = array('input_dir'           => dirname(realpath(__FILE__)),
                                              'PI' =>                    'Pacific Islands',
                                              ),
 
-
-
+              'report_translations' => array(),
 
               );
 
@@ -95,6 +95,36 @@ function region_title_to_nid($region_title) {
   return $glob['regions'][$region_title];
 }
 
+
+########################################################################
+
+$result = db_select('node', 'n')
+    ->fields('n', array('nid','title'))
+    ->condition('type', 'report', '=')
+    ->execute();
+
+foreach ($result as $record) {
+  $glob['reports'][$record->{title}] = $record->{nid};
+}
+
+function report_title_to_nid($report_title) {
+  global $glob;
+
+  foreach ($glob['report_translations'] as $src => $dst) {
+    if ($report_title == $src) {
+      $report_title = $dst;
+      break;
+    }
+  }
+
+  if ($report_title == 'US') {
+    $report_title = 'National';
+  }
+  return $glob['reports'][$report_title];
+}
+
+
+########################################################################
 
 $result = db_query("select tid,name from taxonomy_term_data where vid = (select vid from taxonomy_vocabulary where name='Variable Type')");
 foreach ($result as $record) {

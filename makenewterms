@@ -1,0 +1,28 @@
+#! /usr/bin/perl
+
+@newterms = (
+    'Disasters',
+    'Drought',
+    'Greenhouse Gases',
+    'Ice',
+    'Lakes',
+    'Models',
+    'Rivers',
+    'Snow',
+    'Tornadoes',
+    'Tropical Cyclones',
+    'Water Level',
+    'Weather',
+    'Wind'
+    );
+
+sub sql {
+    my $cmd = shift;
+    print "$cmd\n";
+}
+
+sql("update taxonomy_term_data set name='Sea' where tid=23;");
+
+foreach $term (@newterms) {
+    sql("insert into taxonomy_term_data (vid,name,description,format,weight) values (6,'$term','','filtered_html',0);");
+}

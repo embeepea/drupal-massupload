@@ -1,26 +1,31 @@
-local database credentials in DbCredentials.pm
+PROCESS:
 
-first, load local database by hand from .sql file in zip archive
-
-./dodump  > all.csv
-
-drush scr report.php
-
-PREP:
-  populate var_type vocabulary
-     use query
-         select tid,name from taxonomy_term_data where vid = (select vid from taxonomy_vocabulary where name='Variable Type')
-     to see the current list of terms; use Druapl UI to add terms as needed
-     Also, adjust 'var_type_translations' array in masupload.php as needed.
-  create image dst dir
-         mkdir ./default/files/b
-  copy images to dst dir
-         ( cd Dump-2012-12-04 ;  tar cf - docs figures metadata ) | ( cd /var/dev.nemac.org/html/mbp5/sites/default/files/b ; tar xvf - )
-  create image thumbnail dst dir(s)
-         mkdir ./default/files/styles/thumbnail/public/b/...
-  set permissions on image dst dir(s), thumbnail dst dir(s), copied images
-
-drush scr massupload.php
+1. Load local database by hand from .sql file in zip archive, e.g.:
+        mysql --user=nca_upload2 --password=****** nca_upload2 < Dump-2012-12-18/NCA_Image_Metadata_2012-12-18.sql
+   (local database credentials are in DbCredentials.pm)
+2. dump local database to csv file:
+        ./dodump  > all.csv
+3. run report
+        drush scr report.php
+   Look at results to reconcile region names and term names.  Make sure all regions mentioned in csv file are present in Drupal.  Check
+   region translation table in massupload.php.  Also check var type names.  All var types in csv file should either be present
+   in Drupal, or else should have a translation in var type tranlation table in massupload.php.  Edit 'makenewterms' to generate and 
+   run sql script as needed to modify Drupal's list of terms as needed.
+4. create image dst dir
+        mkdir ./default/files/a
+5. copy images to dst dir, e.g.:
+         ( cd Dump-2012-12-18 ;  tar cf - docs figures metadata ) | ( cd /var/dev.nemac.org/html/mbp5/sites/default/files/a ; tar xvf - )
+5. create image thumbnail dst dir(s)
+        mkdir -p /var/dev.nemac.org/html/mbp5/sites/default/files/styles/thumbnail/public/a/{docs,figures,metadata}
+6. set permissions on image dst dir(s), thumbnail dst dir(s), copied images
+		sudo chmod -R a+w /var/dev.nemac.org/html/mbp5/sites/default/files
+		find /var/dev.nemac.org/html/mbp5/sites/default/files -type d -print | xargs sudo chmod g+s
+7. edit massupload.php to adjust values of
+              'image_src_path'           => dirname(realpath(__FILE__)) . "/Dump-2012-12-21",
+              'image_dst_path'           => "b",
+   as needed
+8. run upload script:
+        drush scr massupload.php
 
 
 id                   75
