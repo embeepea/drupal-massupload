@@ -348,13 +348,13 @@ function process_line($h) {
     printf("  WARNING: empty data_type field\n");
   } else {
     $delta = 0;
-    if (preg_match('/observ$/i', $h['data_type'])) {
+    if (preg_match('/^observ/i', $h['data_type'])) {
       insert_field($h, "data_type",
                    array('field_data_type_value'   => 'Observed'),
                    $delta++
                    );
     }
-    if (preg_match('/simul$/i', $h['data_type'])) {
+    if (preg_match('/^simul/i', $h['data_type'])) {
       insert_field($h, "data_type",
                    array('field_data_type_value'   => 'Simulated'),
                    $delta++
