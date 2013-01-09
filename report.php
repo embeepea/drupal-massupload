@@ -136,5 +136,8 @@ foreach (array_keys($var_types) as $var_type) {
 }
 printf("  Var Types in CSV file that are NOT in Drupal:\n");
 foreach (array_keys($new_var_types) as $var_type) {
+  if ($glob['var_type_translations'][$var_type]) {
+    $var_type = $glob['var_type_translations'][$var_type];
+  }
   printf("'%s'\n", $var_type);
 }
